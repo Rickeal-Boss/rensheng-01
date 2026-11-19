@@ -8,14 +8,20 @@ on:
       runner:
         description: macOS runner label (use macos-15-intel or macos-13 when arm64 Macs are at capacity)
         required: false
-        default: macos-15-intel
+        default: ''
 
 permissions:
   contents: write
 
 jobs:
   build:
-    runs-on: ${{ inputs.runner || 'macos-15-intel' }}
+    # GitHub's hosted Macs of one kind are sometimes all busy and the job is cancelled while queued,
+    # so the IPA is built on three kinds at once; whichever finishes first publishes it.
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [macos-15-intel, macos-15, macos-latest]
+    runs-on: ${{ inputs.runner || matrix.runner }}
     timeout-minutes: 60
     steps:
       - name: Checkout
@@ -64,12 +70,12 @@ jobs:
           gh release view "$TAG" >/dev/null 2>&1 || gh release create "$TAG" \
             --title "我的一生 My Life $TAG" \
             --notes "IPA：下载 MyLife.ipa 用万能签签名安装。安卓：下载 MyLife-*.apk 直接安装。" || true
-          gh release upload "$TAG" MyLife.ipa --clobber
+          gh release upload "$TAG" MyLife.ipa --clobber || (sleep 10; gh release upload "$TAG" MyLife.ipa --clobber) || true
 
       - name: Upload IPA artifact
         uses: actions/upload-artifact@v4
         with:
-          name: MyLife-ipa
+          name: MyLife-ipa-${{ matrix.runner }}
           path: MyLife.ipa
 
       - name: Save build log to ci-logs branch
@@ -91,7 +97,7 @@ jobs:
           cp "$RUNNER_TEMP"/ci/*.txt .
           git add -f errors.txt error_context.txt tail.txt status.txt 2>/dev/null || git add -f errors.txt tail.txt status.txt
           git commit -q -m "CI log run ${{ github.run_number }}"
-          git push -f origin HEAD:ci-logs
+          git push -f origin HEAD:ci-logs || true
 
   android:
     runs-on: ubuntu-latest

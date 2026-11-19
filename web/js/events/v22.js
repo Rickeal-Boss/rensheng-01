@@ -11,7 +11,7 @@
   var N = G.N;
   function S() { return G.S; }
   function P() { return G.S && G.S.p; }
-  G.VERSION = '3.1.0';
+  G.VERSION = '3.2.0';
 
   /* ---------------- who is still alive ---------------- */
   G.gpa = function (g, side) {
@@ -58,7 +58,7 @@
 
   /* ---------------- the runner: gates, throttles, quiet news ---------------- */
   // minimum years between two pop-ups of the same kind
-  var GAP = { sys_admirer: 2, pure_date: 3, sys_mission: 3, sys_case: 3, sys_raid: 3, sys_bribe: 3, spy_story: 4, spy_case: 5, sys_assess: 3, v20_contract: 4, sys_biz_crisis: 3, trust_review: 5 };
+  var GAP = { sys_admirer: 2, pure_date: 3, sys_mission: 3, sys_case: 3, sys_raid: 3, sys_bribe: 3, spy_story: 3, spy_case: 3, sys_assess: 3, v20_contract: 4, sys_biz_crisis: 3, trust_review: 5 };
   var LIFE_MAX = { sys_admirer: 10, pure_date: 6, v20_contract: 5, trust_review: 4 };
   var run0 = G.runEvent;
   G.runEvent = async function (id, prm, npcId) {

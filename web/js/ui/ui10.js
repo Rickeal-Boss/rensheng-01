@@ -8,6 +8,8 @@
   'use strict';
   var h = G.h, UI = G.UI, T = UI.T, tap = UI.tap;
   if (!h || !UI) return;
+  // spies no longer sit an instinct quiz: their tests are settled by stats and gear (events/spy22.js)
+  UI.spyGame = null; G.UI.spyGame = null;
 
   /* ---------------- who is this story about ---------------- */
   var IDN = {
@@ -82,6 +84,7 @@
     var r = endU.apply(this, arguments);
     try {
       var ov = d && d.ov, rep = document.querySelector('.report');
+      if (d && d.endN && rep && !document.querySelector('.galcard')) rep.parentNode.insertBefore(h('div', { class: 'card galcard' }, h('span', null, '🏆 ' + T('结局图鉴 {n}/{m}|Endings collected {n}/{m}', { n: d.endN, m: d.endTot })), d.endNew ? h('b', { class: 'newend' }, T('新结局！|New ending!')) : null), rep);
       if (ov && rep && !document.querySelector('.ovcard')) {
         var org = G.ORIGIN[ov.org];
         rep.parentNode.insertBefore(h('div', { class: 'card ovcard' },
@@ -95,6 +98,8 @@
 
   /* ---------------- what's new ---------------- */
   var NEWS = [
+    ['🕵️', '特工不再答题|Spies: no more quizzes', '特工的直觉答题全部取消，改为真正的任务：东方快车、大使馆舞会、雪山缆车、赌场、桥上交换……每次任务有不同的做法（硬闯、智取、社交、用装备），结果看你的能力和运气。新增自选代号、掩护身份、装备科（口红麻醉枪、滑翔伞雨伞、改装跑车等），装备会解锁新的任务方案。|The instinct quizzes are gone. Spies now run real missions — a night train, an embassy ball, a ski lift, a casino, a bridge exchange — each with several approaches (force, wits, charm, gadgets) settled by your abilities and luck. Pick your own codename and cover job; the gadget lab hands out kit that unlocks new options.'],
+    ['🏆', '结局大扩充|Many more endings', '新增几十种结局（无名英雄、双面人生、桥上归来的人、百岁人瑞、东山再起、一个人的一生、连续创业者、环球旅行家……），平淡的人生会以你出身的专属评价作为结局；还有结局图鉴，记录你解锁过的所有结局。|Dozens of new endings, an origin verdict for quieter lives, and an ending gallery that records every ending you reach.'],
     ['🏠', '60种出身，60种人生|60 origins, 60 different lives', '每一种出身都有自己独立的事件库：专属的家庭矛盾、童年、求学、人情、立业、人生转折和晚年，前面的选择会改变后面的剧情；死后还有专属的“出身评价”。军人家庭的矛盾是驻地分离，富豪家是遗产信托，工薪家是下岗和房贷，孤儿有院长妈妈和开放日。这些事件只属于对应的出身，不会出现在别人的人生里。|Every origin has its own event library: its own family conflict, childhood, school, people, career, turning point and old age; earlier choices change later chapters, and an origin verdict closes the life. These events never appear in anyone else\'s life.'],
     ['🔁', '剧情不再重播|No more reruns', '身份剧情一生只发生一次；同一个标题十年内不会再出现；新年场景几年才有一次、每个只看一次；表白、约会、任务、考核这类弹窗都拉开了间隔。|Identity stories happen once in a life; the same headline won\'t return within ten years; New Year scenes come every few years and never repeat; admirers, dates, missions and exams are spaced out.'],
     ['👴', '家族不再穿帮|A consistent family', '有爷爷奶奶、爸爸妈妈出场的剧情，只在他们还活着的时候发生。红二代的爷爷只会去世一次，之后有告别、遗物和后续故事。|Stories with grandparents or parents only happen while they\'re alive. A political dynasty\'s grandfather dies once — followed by a farewell, his keepsakes and what comes after.'],
@@ -107,7 +112,7 @@
   ];
   UI.whatsNew = function () {
     var body = h('div', { class: 'wnew' }, NEWS.map(function (n) { return h('div', { class: 'wn' }, h('div', { class: 'wi' }, n[0]), h('div', null, h('b', null, T(n[1])), h('p', null, T(n[2])))); }));
-    var md = UI.modal({ title: T('3.1 大更新|Version 3.1'), icon: '🎉', kind: 'v3 wnm', body: body, foot: [h('button', { class: 'opt solid', onclick: tap(function () { md.close(); }) }, T('开始新的人生吧|Let\'s live'))], close: true });
+    var md = UI.modal({ title: T('3.2 大更新|Version 3.2'), icon: '🎉', kind: 'v3 wnm', body: body, foot: [h('button', { class: 'opt solid', onclick: tap(function () { md.close(); }) }, T('开始新的人生吧|Let\'s live'))], close: true });
     try { G.meta.seen3 = 1; G.saveMeta(); } catch (e) { }
   };
 

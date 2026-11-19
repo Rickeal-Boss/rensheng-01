@@ -105,3 +105,5 @@
 .ovcard .ovt { font-family: var(--serif); font-size: 22px; font-weight: 700; color: var(--red); letter-spacing: .08em; margin: 2px 0 6px; }
 .ovcard .ovd { margin: 0 0 6px; font-size: 14.5px; line-height: 1.7; }
 .ovcard .ovn { color: var(--ink3); font-size: 12px; }
+.galcard { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-weight: 700; font-size: 14px; padding: 10px 14px !important; }
+.galcard .newend { background: #e5644c; color: #fff8ea; padding: 3px 10px; border-radius: 999px; font-size: 12px; animation: v3wob 2s ease-in-out infinite; }
